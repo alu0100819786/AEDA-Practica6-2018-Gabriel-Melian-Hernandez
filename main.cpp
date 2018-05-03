@@ -11,7 +11,7 @@ using namespace std;
 
 unsigned opc_demo =4;
 
-
+//Metodo error para indicar que se ha seleccionado una opcion errónea.
 void error(void){
 	cin.ignore();
 	cout << endl << "La opcion introducida no es valida. Presione enter e introduzca otra.";
@@ -19,6 +19,7 @@ void error(void){
 	
 }
 
+//Metodo para calcular en el modo estadístico los minimos, medios y maximos de insercion y busqueda.
 void calcular_cp(vector<float> &com, vector<vector<float>> &v, float sm, unsigned int modo_){
 	
 	insercion<float>(com,1);
@@ -35,7 +36,7 @@ int main (void){
 	unsigned opc = 3;
 	int ct_pruebas = 300;
 	int tam_arbol, num_rep;
-
+//Conseguimos el modo de operacion.
 	while (opc != 0 && opc != 1 && opc != 2){
 		cout << "================ " << "ABB" << " =================" << endl;
 		cout << "Seleccione el modo con el que desea trabajar: " << endl;
@@ -47,7 +48,7 @@ int main (void){
 		if (opc != 0 && opc != 1 && opc != 2)
 			error();
 	}
-
+//Si elegimos el Modo demostracion
 	if (opc==0){
 		arbol<int> arbol_demo;
 		do{
@@ -64,7 +65,7 @@ int main (void){
 				error();
 		}
 		
-		
+//Switch para el modo demostracion en el que podremos insertar y eliminar claves, mostrar el árbol o salir del programa.
 		switch (opc_demo){
 			case 0:{
 			
@@ -72,8 +73,8 @@ int main (void){
 				
 				cout << "============= " << "MODO DEMOSTRACIÓN CON INT" << " =============" << endl;
 				cout << "Introduzca el número a insertar en el árbol: ";
-				cin >> mat;
-				arbol_demo.insertar(mat);
+				cin >> mat;//Conseguimos el numero a insertar
+				arbol_demo.insertar(mat);//insertamos el numero en el arbol
 				cout << "El numero insertado es " << mat << endl;
 				cin.ignore(); cin.ignore();
 				opc_demo = 4;
@@ -87,7 +88,7 @@ int main (void){
 				cout << "============= " << "MODO DEMOSTRACIÓN CON INT" << " =============" << endl;
 				cout << "Introduzca el número a eliminar en el árbol: ";
 				cin >> mat;
-				arbol_demo.eliminar(mat);
+				arbol_demo.eliminar(mat);//Eliminamos un numero del arbol
 				cout << "El numero eliminado es " << mat << endl;
 				cin.ignore(); cin.ignore();
 				opc_demo = 4;
@@ -97,7 +98,7 @@ int main (void){
 					
 				
 				cout << "============= " << "MODO DEMOSTRACIÓN CON INT" << " =============" << endl;
-				arbol_demo.nivel_orden();
+				arbol_demo.nivel_orden();//Mostramos el arbol
 				cin.ignore(); cin.ignore();
 				opc_demo = 4;
 				break;
@@ -112,7 +113,7 @@ int main (void){
 		}while(opc_demo != 3);
 	}
 	else if (opc==1){
-		
+//Si elegimos el modo estadistica, pasamos al programa un tamaño de arbol y un numero de repeticiones y el se encargará de llenar el arbol de random numeros y realizar los calculos.	
 		cout << "============= " << "MODO ESTADÍSTICA" << " =============" << endl;
 		cout << "Introduzca el tamaño del arbol a analizar: ";
 		cin >> tam_arbol;
@@ -125,7 +126,7 @@ int main (void){
 		vector<vector<float>> resultados(2, vector<float>(3));
 		vector<float> comp(vector_DNI.size());
 		float suma = 0, suma_intermedia =0;
-
+//Llevamos a cabo las comparaciones de insercion.
 			for (int j=0; j<num_rep; j++){
 			arbol<DNI> arbol_esta;
 			for (int k=0;k<vector_DNI.size();k++)
@@ -142,7 +143,7 @@ int main (void){
 					
 					vector<DNI> vector_DNI_2(tam_arbol*2);
 					vector<float> comp_2(vector_DNI_2.size());
-
+//Llevamos a cabo las comparaciones de busqueda.
 		for (int j=0; j<num_rep; j++){
 			for (int k=0;k<vector_DNI_2.size();k++)
 				vector_DNI_2[k].set_random();

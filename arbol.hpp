@@ -45,23 +45,27 @@ public:
 	unsigned get_esta(void);
 };
 
+//Contructor de la clase arbol
 template<class tipo_dato>
 arbol<tipo_dato>::arbol (void):
 raiz_(nullptr),
 cp_esta(0)
 {}
 
+//Constructor de la clase arbol.
 template<class tipo_dato>
 arbol<tipo_dato>::arbol (nodo<tipo_dato>* nodo_raiz):
 raiz_(nodo_raiz),
 cp_esta(0)
 {}
 
+//Destructor de la clase Arbol
 template<class tipo_dato>
 arbol<tipo_dato>::~arbol(void){
 	podar(raiz_);
 }
 
+//Metodo podar para poner los nodos a nulo.
 template<class tipo_dato>
 void arbol<tipo_dato>::podar(nodo<tipo_dato>*& nodo_) {
 
@@ -73,26 +77,31 @@ void arbol<tipo_dato>::podar(nodo<tipo_dato>*& nodo_) {
 	nodo_ = nullptr;
 }
 
+//Metodo get_raiz para conseguir la raiz del arbol.
 template<class tipo_dato>
 nodo<tipo_dato>* arbol<tipo_dato>::get_raiz(void){
 	return raiz_;
 }
 
+//Metodo Empty para comprobar si la raiz esta vacia o no.
 template<class tipo_dato>
 bool arbol<tipo_dato>::empty(void) const{
     return empty(raiz_);
 }
 
+//metodo Empty para comprobar si un nodo esta vacio o no.
 template<class tipo_dato>
 bool arbol<tipo_dato>::empty(nodo<tipo_dato>* nodo) const{
     return nodo == nullptr;
 }
 
+//Metodo Size para conseguir el tamaño del arbol.
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::size(void) const{
     return size(raiz_);
 }
 
+//Metodo Size para conseguir el tamaño relativa a un nodo.
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::size(nodo<tipo_dato>* nodo) const{
     if(empty(nodo))
@@ -100,12 +109,14 @@ unsigned arbol<tipo_dato>::size(nodo<tipo_dato>* nodo) const{
     return(1 + size(nodo->izquierda()) + size(nodo->derecha()));
 }
 
+//Metodo Height para conseguir el alto de un arbol
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::height(void) const
 {
     return height(raiz_);
 }
 
+//Metodo Height para conseguir el alto de un nodo
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::height(nodo<tipo_dato>* nodo) const
 {
@@ -115,42 +126,56 @@ unsigned arbol<tipo_dato>::height(nodo<tipo_dato>* nodo) const
     return max(height(nodo->izquierda()), height(nodo->derecha()))+1;
 }
 
+//metodo leaf, para saber si un nodo es hoja o no
 template<class tipo_dato>
 bool arbol<tipo_dato>::leaf(nodo<tipo_dato>* nodo){
 	return !nodo->derecha() && !nodo->izquierda();
 }
 
+//metodo Insertar, que recibe un dato, lo pone en un nodo y llama a insertar.
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::insertar(tipo_dato elemento){
     nodo<tipo_dato>* nodo_ = new nodo<tipo_dato>(elemento);
     return insertar(nodo_, raiz_, 0);
 }
 
+//Metodo Insertar
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::insertar(nodo<tipo_dato>* nodo_, nodo<tipo_dato>*& raiz, unsigned ct_cp){
-    ct_cp++;
+    ct_cp++;//comparaciones.
+    //Si la raiz esta Null, añadimos el valor a la raiz
 	if(raiz == nullptr){
 		raiz = nodo_;
 		return ct_cp;
 	}
-	if(nodo_->dato() <= raiz->dato())
+	//Si el valor del nodo es menor o igual que la raiz lo insertamos en la izquierda, sino, lo insertamos en la derecha.
+	if(nodo_->dato() < raiz->dato()){
 		ct_cp = insertar(nodo_, raiz->izquierda(), ct_cp);
-	else
+	}
+	if(nodo_->dato() > raiz->dato()){
 		ct_cp = insertar(nodo_, raiz->derecha(), ct_cp);
+	}
+	if(nodo_->dato() == raiz->dato()){
+		cout << "el numero: " << nodo_->dato() << " está repetido" << endl;
+		ct_cp = insertar(nodo_,raiz->derecha(), ct_cp);
+	}
+		
 	
 	return ct_cp;
 }
 
+//metodo eliminar
 template<class tipo_dato>
 void arbol<tipo_dato>::eliminar(tipo_dato elemento){
     eliminar(elemento, raiz_);
 }
 
+//Metodo eliminar
 template<class tipo_dato>
 void arbol<tipo_dato>::eliminar(tipo_dato elemento, nodo<tipo_dato>*& raiz){
+   //Si la raiz esta vacia no eliminamos nada
     if(raiz == nullptr)
         return;
-
     if(elemento < raiz->dato())
         eliminar(elemento, raiz->izquierda());
     else if(elemento > raiz->dato())
@@ -169,6 +194,7 @@ void arbol<tipo_dato>::eliminar(tipo_dato elemento, nodo<tipo_dato>*& raiz){
     }
 }
 
+//metodo Sustituir.
 template<class tipo_dato>
 void arbol<tipo_dato>::sustituir(nodo<tipo_dato>*& viejo, nodo<tipo_dato>*& cambio){
     if(cambio->derecha() != nullptr)
@@ -180,6 +206,7 @@ void arbol<tipo_dato>::sustituir(nodo<tipo_dato>*& viejo, nodo<tipo_dato>*& camb
     }
 }
 
+//Metodo para imprimir los nodos.
 template<class tipo_dato>
 void arbol<tipo_dato>::imprimir_dato(nodo<tipo_dato>* nodo){
     if(nodo == nullptr){
@@ -209,6 +236,7 @@ void arbol<tipo_dato>::nivel_orden(void){
 	nivel_orden(raiz_);
 }
 
+//Metodo para imprimir los datos desde la raiz.
 template<class tipo_dato>
 void arbol<tipo_dato>::pre_orden(nodo<tipo_dato>* raiz){
     if(raiz == nullptr)
@@ -218,6 +246,7 @@ void arbol<tipo_dato>::pre_orden(nodo<tipo_dato>* raiz){
     pre_orden(raiz->derecha());
 }
 
+//Metodo para imprimir los datos desde las hojas.
 template<class tipo_dato>
 void arbol<tipo_dato>::post_orden(nodo<tipo_dato>* raiz){
     if(raiz == nullptr)
@@ -227,6 +256,7 @@ void arbol<tipo_dato>::post_orden(nodo<tipo_dato>* raiz){
     imprimir_dato(raiz);
 }
 
+//Metodo para imprimir los datos desde izquierda a derecha.
 template<class tipo_dato>
 void arbol<tipo_dato>::in_orden(nodo<tipo_dato>* raiz){
     if(raiz == nullptr)
@@ -236,6 +266,7 @@ void arbol<tipo_dato>::in_orden(nodo<tipo_dato>* raiz){
     in_orden(raiz->derecha());
 }
 
+//Metodo para imprimir con niveles de profundidad en el arbol.
 template<class tipo_dato>
 void arbol<tipo_dato>::nivel_orden(nodo<tipo_dato>* raiz){
 	deque<pair<nodo<tipo_dato>*, unsigned>> cola;
@@ -268,10 +299,11 @@ void arbol<tipo_dato>::nivel_orden(nodo<tipo_dato>* raiz){
 
 template<class tipo_dato>
 nodo<tipo_dato>* arbol<tipo_dato>::buscar(tipo_dato elemento){
-	cp_esta = 0; 
+	cp_esta = 0; //Comparaciones estadistica
 	return buscar(raiz_, elemento);
 }
 
+//Metodo buscar, que recibe un nodo y un elemento  y lo busca en el arbol, emepzando por el nodo pasado y dependiendo del valor del elemento seguira buscando por derecha o izquierda.
 template<class tipo_dato>
 nodo<tipo_dato>* arbol<tipo_dato>::buscar(nodo<tipo_dato>* nodo, tipo_dato elemento){
 
@@ -292,6 +324,7 @@ nodo<tipo_dato>* arbol<tipo_dato>::buscar(nodo<tipo_dato>* nodo, tipo_dato eleme
 	return buscar(nodo->derecha(), elemento);
 }
 
+//Conseguimos las comparaciones estadisticas.
 template<class tipo_dato>
 unsigned arbol<tipo_dato>::get_esta(void){
 	return cp_esta;
